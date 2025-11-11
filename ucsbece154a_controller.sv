@@ -45,11 +45,13 @@ module ucsbece154a_controller (
  always_comb begin
    case (op_i)
 
-	instr_lw_op:        controls = 12'bz_zzz_z_z_zz_z_zz_z;       
-	instr_sw_op:        controls = 12'bz_zzz_z_z_zz_z_zz_z;  
-	instr_Rtype_op:     controls = 12'bz_zzz_z_z_zz_z_zz_z;   
-	instr_beq_op:       controls = 12'bz_zzz_z_z_zz_z_zz_z;   
-	instr_ItypeALU_op:  controls = 12'bz_zzz_z_z_zz_z_zz_z;    
+	instr_lw_op:        controls = 12'b1_000_1_0_01_0_00_0;       
+	instr_sw_op:        controls = 12'b0_001_1_1_xx_0_00_0;  
+	instr_Rtype_op:     controls = 12'b1_xxx_0_0_00_0_10_0;   
+	instr_beq_op:       controls = 12'b0_010_0_0_xx_1_01_0;   
+	instr_ItypeALU_op:  controls = 12'b1_000_1_0_00_0_10_0;
+	//instr_jal_op:		controls = 12'b1_011_x_0_10_x_xx_1;
+	//instr_lui_op:		controls = 12'b1_100_x_0_11_0_xx_0; // Datapath needed for lui extend, ResultSrc mux needs to support 11
 	default:            controls = 12'bx_xxx_x_x_xx_x_xx_x; 
 
      //      `ifdef SIM
@@ -69,16 +71,16 @@ module ucsbece154a_controller (
  always_comb begin
  case(ALUOp)
 
-   ALUop_mem:                 ALUControl_o = 3'bzzz;
-   ALUop_beq:                 ALUControl_o = 3'bzzz;
+   ALUop_mem:                 ALUControl_o = 3'b000;
+   ALUop_beq:                 ALUControl_o = 3'b001; // Subtract to compare
    ALUop_other: 
        case(funct3_i)
            instr_addsub_funct3: 
-                 if(RtypeSub) ALUControl_o = 3'bzzz;
-                 else         ALUControl_o = 3'bzzz;
-           instr_slt_funct3:  ALUControl_o = 3'bzzz;  
-           instr_or_funct3:   ALUControl_o = 3'bzzz;
-           instr_and_funct3:  ALUControl_o = 3'bzzz;  
+			   	if(RtypeSub) ALUControl_o = 3'b001;
+                else         ALUControl_o = 3'b000;
+           instr_slt_funct3:  ALUControl_o = 3'b101;  
+           instr_or_funct3:   ALUControl_o = 3'b011;
+           instr_and_funct3:  ALUControl_o = 3'b010;  
            default:           ALUControl_o = 3'bxxx;
 
         //     `ifdef SIM
@@ -98,7 +100,7 @@ end
 
 // TO DO: Generate properly PCSrc by replacing all `z` values with the correct values
 
-assign PCSrc_o = 1'bz; 
+assign PCSrc_o = ((Zero_i & Branch) | Jump);
 
 endmodule
 
