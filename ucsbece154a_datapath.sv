@@ -74,8 +74,8 @@ always_comb begin
     case (ResultSrc_i)
         ResultSrc_ALU : Result_i = ALUResult_o;
         ResultSrc_load : Result_i = ReadData_i;
-        // ResultSrc_jal : 
-        // ResultSrc_lui :
+        ResultSrc_jal : Result_i = PCPlus4_o;
+        ResultSrc_lui : Result_i = ImmExt_o;
         default: Result_i = 32'd0;
     endcase
 end
