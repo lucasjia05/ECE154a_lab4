@@ -2,7 +2,7 @@
 // All Rights Reserved
 // Copyright (c) 2025 UCSB ECE
 // Distribution Prohibited
-
+`define SIM
 
 module ucsbece154a_imem (
     input  logic  [31:0] a_i,
