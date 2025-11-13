@@ -71,16 +71,16 @@ module ucsbece154a_controller (
  always_comb begin
  case(ALUOp)
 
-   ALUop_mem:                 ALUControl_o = 3'b000;
-   ALUop_beq:                 ALUControl_o = 3'b001; // Subtract to compare
+   ALUop_mem:                 ALUControl_o = ALUcontrol_add;
+   ALUop_beq:                 ALUControl_o = ALUcontrol_sub;
    ALUop_other: 
        case(funct3_i)
            instr_addsub_funct3: 
-			   	if(RtypeSub) ALUControl_o = 3'b001;
-                else         ALUControl_o = 3'b000;
-           instr_slt_funct3:  ALUControl_o = 3'b101;  
-           instr_or_funct3:   ALUControl_o = 3'b011;
-           instr_and_funct3:  ALUControl_o = 3'b010;  
+			   if(RtypeSub) ALUControl_o = ALUcontrol_sub;
+                else         ALUControl_o = ALUcontrol_add;
+           instr_slt_funct3:  ALUControl_o = ALUcontrol_slt;  
+           instr_or_funct3:   ALUControl_o = ALUcontrol_or;
+           instr_and_funct3:  ALUControl_o = ALUcontrol_and;  
            default:           ALUControl_o = 3'bxxx;
 
         //     `ifdef SIM
