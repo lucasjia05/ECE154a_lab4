@@ -2,7 +2,7 @@
 // All Rights Reserved
 // Copyright (c) 2025 UCSB ECE
 // Distribution Prohibited
-
+`define SIM
 
 module ucsbece154a_controller (
     input logic     [6:0] op_i, 
