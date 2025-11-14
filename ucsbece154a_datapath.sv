@@ -63,10 +63,10 @@ always_comb begin
 end
 
 ucsbece154a_alu alu (
-    .A(rd1_o), .B(ALUSrcB_i),
-    .Control(ALUControl_i),
-    .Result(ALUResult_o),
-    .Zero(Zero_o)
+    .a(rd1_o), .b(ALUSrcB_i),
+    .f(ALUControl_i),
+    .result(ALUResult_o),
+    .zero(Zero_o)
 );
 
 // mux for selecting between ALU_result or ReadData_i for WriteData_o
